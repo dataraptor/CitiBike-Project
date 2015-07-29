@@ -1,8 +1,17 @@
 import pandas as pd
 
+import csv
+import json
 import urllib
 import urllib.request
 import zipfile
+
+# Given the year and month, returns a string representation of the custom filepath
+def filepath(year, month):
+    if month < 10:
+        return "csv/%d-0%d - Citi Bike trip data.csv" % (year, month)
+    else:
+        return "csv/%d-%d - Citi Bike trip data.csv" % (year, month)
 
 # Will retrieve the specified dataset from the Citi Bike System Data website
 def retrieve(year, month):
@@ -17,18 +26,26 @@ def retrieve(year, month):
         zf.extractall('csv/')
 
 def scrape(filepath):
-    df = pd.read_csv(filepath, header=0)
-    print(df.to_json())
+    print("Scraping data from %s..." % (filepath))
+    header = ["tripduration", "starttime", "stoptime",
+              "start station id", "start station name", "start station latitude", "start station longitude",
+              "end station id", "end station name", "end station latitude", "end station longitude",
+              "bikeid", "usertype", "birth year", "gender"]
 
-# Given the year and month, returns a string representation of the custom filepath
-def filepath(year, month):
-    if month < 10:
-        return "csv/%d-0%d-Citi_Bike_trip_data.csv" % (year, month)
-    else:
-        return "csv/%d-%d-Citi_Bike_trip_data.csv" % (year, month)
+    csvfile = open(filepath, 'r')
+    reader = csv.DictReader(csvfile)
+    data = []
+    for each in reader:
+        row = {}
+        for field in header:
+            row[field] = each[field]
+        data.append(row)#df = pd.read_csv(filepath, header=0)
+    print("...done")
+    return data
 
 if __name__ == "__main__":
-    year, month = 2013, 7
+    scrape(filepath(2014, 7))
+    '''year, month = 2013, 7
     retrieve(year, month)
     stop = [2015, 7]
     while [year, month] != stop:
@@ -38,3 +55,4 @@ if __name__ == "__main__":
         if month == 13:
             month = 1
             year += 1
+    '''
