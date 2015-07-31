@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 
-class MongoWrapper():
+class MongoWrapper:
     # Upon initialization, MongoWrapper will establish a connection
     # to the specified database. Specific collections will be
     # retrieved on a per-method basis.
@@ -11,10 +11,10 @@ class MongoWrapper():
         self.DB_NAME = database
         self.CONNECTION = MongoClient(self.MONGODB_HOST, self.MONGODB_PORT)
 
-    def test(self, collection_name, fields):
+    def test(self, collection_name):
         try:
             collection = self.CONNECTION[self.DB_NAME][collection_name]
-            row = collection.find_one(projection=fields)
+            row = collection.find_one()
             print(row)
         except Exception as e:
             print(str(e))
@@ -39,12 +39,3 @@ class MongoWrapper():
             print("...done")
         except Exception as e:
             print(str(e))
-
-    '''def export_csv():
-        print "Exporting to csv..."
-        f = open('tweets.csv', 'w', newline = '')
-        for tweet in tweets:
-            tweet.date = tweet.date.date()
-    '''
-    #    query = "@Betterment"
-    #    scrape(query)
