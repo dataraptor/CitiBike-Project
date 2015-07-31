@@ -55,10 +55,11 @@
 var map, pointarray, heatmap;
 
 var weightedHeatMapData = [];
-
+var stationMarkers = [];
 //Adding weightedHeatMapData
 $.getJSON('http://localhost:5000/citibike/heatmap', function(data){
     $.each(data, function(key, val){
+      var name = val.stationName;
       var lat = val.latitude;
       var long = val.longitude;
       var w = val.density;
@@ -85,7 +86,7 @@ function initialize() {
   var mapOptions = {
     zoom: 13,
     center: new google.maps.LatLng(40.7274, -73.9857), // Center of map is on Empire State Building
-    mapTypeId: google.maps.MapTypeId.SATELLITE
+    mapTypeId: google.maps.MapTypeId.HYBRID
   };
 
   map = new google.maps.Map(document.getElementById('map-canvas'),
@@ -96,7 +97,7 @@ function initialize() {
   heatmap = new google.maps.visualization.HeatmapLayer({
     data: pointArray
   });
-
+  
   heatmap.setMap(map);
 }
 

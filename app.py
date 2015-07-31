@@ -8,22 +8,6 @@ import heatmap
 
 app = Flask(__name__)
 
-MONGODB_HOST = 'localhost'
-MONGODB_PORT = 27017
-DB_NAME = 'CitiBike'
-COLLECTION_NAME = 'historical'
-FIELDS = {
-    "tripduration" : 1,
-    "starttime" : 1,
-    "stoptime" : 1,
-    "start station name" : 1,
-    "start station latitude" : 1,
-    "start station longitude" : 1,
-    "end station name" : 1,
-    "end station latitude" : 1,
-    "end station longitude" : 1
-}
-
 @app.route("/")
 def index():
     return render_template("index.html")
